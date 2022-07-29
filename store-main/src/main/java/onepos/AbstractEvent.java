@@ -3,7 +3,7 @@ package onepos;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+import onepos.config.kafka.KafkaProcessor;
 
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
@@ -39,36 +39,36 @@ public class AbstractEvent {
         return json;
     }
 
-    // public void publish(String json){
-    //     if( json != null ){
+    public void publish(String json){
+        if( json != null ){
 
-    //         /**
-    //          * spring streams 방식
-    //          */
-    //         KafkaProcessor processor = KitchenApplication.applicationContext.getBean(KafkaProcessor.class);
-    //         MessageChannel outputChannel = processor.outboundTopic();
+            /**
+             * spring streams 방식
+             */
+            KafkaProcessor processor = StoreApplication.applicationContext.getBean(KafkaProcessor.class);
+            MessageChannel outputChannel = processor.outboundTopic();
 
-    //         outputChannel.send(MessageBuilder
-    //                 .withPayload(json)
-    //                 .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-    //                 .build());
+            outputChannel.send(MessageBuilder
+                    .withPayload(json)
+                    .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
+                    .build());
 
-    //     }
-    // }
+        }
+    }
 
-    // public void publish(){
-    //     this.publish(this.toJson());
-    // }
+    public void publish(){
+        this.publish(this.toJson());
+    }
 
-    // public void publishAfterCommit(){
-    //     TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
+    public void publishAfterCommit(){
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
 
-    //         @Override
-    //         public void afterCompletion(int status) {
-    //             AbstractEvent.this.publish();
-    //         }
-    //     });
-    // }
+            @Override
+            public void afterCompletion(int status) {
+                AbstractEvent.this.publish();
+            }
+        });
+    }
 
 
     public String getEventType() {

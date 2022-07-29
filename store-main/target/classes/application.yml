@@ -18,27 +18,27 @@ spring:
         format_sql: true
         show_sql: true
 
-  # cloud:
-  #   stream:
-  #     kafka:
-  #       binder:
-  #         brokers: localhost:29092
-  #       streams:
-  #         binder:
-  #           configuration:
-  #             default:
-  #               key:
-  #                 serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-  #               value:
-  #                 serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-  #     bindings:
-  #       event-in:
-  #         group: order
-  #         destination: onepos
-  #         contentType: application/json
-  #       event-out:
-  #         destination: onepos
-  #         contentType: application/json
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:29092
+        streams:
+          binder:
+            configuration:
+              default:
+                key:
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                value:
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+      bindings:
+        event-in:
+          group: order
+          destination: onepos
+          contentType: application/json
+        event-out:
+          destination: onepos
+          contentType: application/json
 
 logging:
   level:
