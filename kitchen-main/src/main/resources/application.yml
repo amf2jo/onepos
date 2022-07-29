@@ -6,7 +6,7 @@ spring:
   profiles: default
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://amf-3-2-onepostest.ckputrdkt11j.ap-northeast-2.rds.amazonaws.com:3306/onepos?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mariadb://amf-3-2-onepostest.ckputrdkt11j.ap-northeast-2.rds.amazonaws.com:3306/ONEPOS?characterEncoding=UTF-8&serverTimezone=UTC
     username: admin
     password: chlrkddlwh
 
