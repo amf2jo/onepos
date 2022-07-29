@@ -3,7 +3,7 @@ package onepos;
 import javax.persistence.*;
 
 @Entity
-@Table(name="store_menu")
+@Table(name="store_menu") //메뉴
 public class Menu {
 
     @Id @GeneratedValue

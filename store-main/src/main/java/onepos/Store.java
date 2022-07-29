@@ -4,7 +4,7 @@ package onepos;
 import javax.persistence.*;
 
 @Entity
-@Table(name="store_store")
+@Table(name="store_store") //매장등록(회원가입)
 public class Store {
 
     @Id @GeneratedValue

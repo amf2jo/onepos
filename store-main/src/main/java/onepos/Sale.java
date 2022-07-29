@@ -7,23 +7,53 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name="store_sale")
+@Table(name="store_sale") //매출등록. "정산 MSA" 에 설계 되었으나 일단 매장에 넣음
 public class Sale {
 
-    @Id @GeneratedValue
-    int saleId ;
+    @Id
     int orderNumber ;
     int storeId ;
     String storeName;
     String saleDtm ;
 
+/* 주문과 메뉴를 같이 처리할 경우 */
+    int saleMenuId;
+    public int getSaleMenuId() {
+        return saleMenuId;
+    }
+    public void setSaleMenuId(int saleMenuId) {
+        this.saleMenuId = saleMenuId;
+    }
+
+    String saleMenuNm;
+    public String getSaleMenuNm() {
+        return saleMenuNm;
+    }
+    public void setSaleMenuNm(String saleMenuNm) {
+        this.saleMenuNm = saleMenuNm;
+    }
+
+    String saleAmt ;
+    public String getSaleAmt() {
+      return saleAmt;
+    }
+    public void setSaleAmt(String saleAmt) {
+      this.saleAmt = saleAmt;
+    }
+
+    int saleQty ;
+    public int getSaleQty() {
+        return saleQty;
+    }
+    public void setSaleQty(int saleQty) {
+        this.saleQty = saleQty;
+    }
+/* 주문과 메뉴를 같이 처리할 경우 */
 
 
 
 
-
-
-
+/* 주문의 메뉴를 별도로 뺄 경우 아래로 처리 한다
     @Embedded  // 1:1
     SalemenuId oneMenu;
 
@@ -46,6 +76,7 @@ public class Sale {
         public void setMenuIds(List<SalemenuId> menuIds) {
                 this.menuIds = menuIds;
         }
+*/
 
 
 
@@ -54,12 +85,6 @@ public class Sale {
 
 
 
-    public int getSaleId() {
-        return saleId;
-    }
-    public void setSaleId(int saleId) {
-        this.saleId = saleId;
-    }
 
     public int getOrderNumber() {
         return orderNumber;
