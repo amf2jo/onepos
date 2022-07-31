@@ -40,6 +40,7 @@ public class AbstractEvent {
     }
 
     public void publish(String json){
+    	System.out.println("json " + json);
         if( json != null ){
 
             /**
