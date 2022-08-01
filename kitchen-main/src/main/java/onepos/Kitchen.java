@@ -32,9 +32,10 @@ public class Kitchen {
             BeanUtils.copyProperties(this, ordered);
             ordered.publishAfterCommit();
 
-            System.out.println("##### Status chk : " + status);
-            Delivered delivered = new Delivered();
-            delivered.publishAfterCommit();
+            // System.out.println("##### Status chk : " + status);
+            // Delivered delivered = new Delivered();
+            // delivered.publishAfterCommit();
+            //test 오류로 주석처리 BeanUtils.copyProperties(this, returned); 없음
         }
         if (Objects.equals(status, "Return")){
             Returned returned = new Returned();

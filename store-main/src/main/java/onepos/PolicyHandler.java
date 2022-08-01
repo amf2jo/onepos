@@ -24,12 +24,11 @@ public class PolicyHandler{
 
 
 
-    @StreamListener(KafkaProcessor.INPUT)  //Test . 서빙 완료시 저장되도록 변경 
+    @StreamListener(KafkaProcessor.INPUT)  //Test . 서빙 완료시 저장되도록 변경
     public void whenOrderCreated(@Payload Ordered ordered){
 
 
-        /*아래 kafka 내부 오류 발생하여 저장이 되지 않음. 저장 test 를 위해 try ~catch 주석처리 .  */
-        //o.s.kafka.listener.LoggingErrorHandler   : Error while processing: ConsumerRecord
+
         // try {
                 System.out.println("##### listener UpdateStatus: " + ordered.toJson());
 
@@ -43,7 +42,7 @@ public class PolicyHandler{
                 SaleRepository.save(sale);
             // }catch (Exception e){
             //     e.printStackTrace();
-            // } 
+            // }
 
     }
 
