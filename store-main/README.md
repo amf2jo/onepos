@@ -67,7 +67,6 @@ http://localhost:8085/menus   (매장ID로 조회 하는 방법 구현 필요!! 
 
 * 서빙pub -> 정산sub 이나, 정산MSA 기능 부재로 일단 매장MSA 포함
 * Test를 위해 주방(kitchen) 완료시 저장되도록 함 => PolicyHandler.java
- - kafka 내부오류 발생하여 try~catch 일단 주석처리
  - MSA 간 전달 파리미터/유형 협의 필요. Test 를 위해 아무 값이나 매핑처리
 
- 
+
