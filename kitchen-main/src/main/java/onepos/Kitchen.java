@@ -13,16 +13,17 @@ public class Kitchen {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    private Long id; 
     private Long orderId;
     private Long deliveryId;
-    private String productId;
-    private Integer qty;
     private String status;
 
     @PostPersist
     public void onPostPersist(){
         Kitchen kitchen = new Kitchen();
+        System.out.println("kitechen " + kitchen);
+        System.out.println("kitechen " + kitchen.toString());
+
         kitchen.setStatus(kitchen.getStatus());
         System.out.println("##### Status chk : " + status);
 
@@ -32,15 +33,38 @@ public class Kitchen {
             BeanUtils.copyProperties(this, ordered);
             ordered.publishAfterCommit();
 
-            // System.out.println("##### Status chk : " + status);
-            // Delivered delivered = new Delivered();
-            // delivered.publishAfterCommit();
-            //test 오류로 주석처리 BeanUtils.copyProperties(this, returned); 없음
+            System.out.println("##### Status chk : " + status);
+            Delivered delivered = new Delivered();
+            delivered.publishAfterCommit();
         }
         if (Objects.equals(status, "Return")){
             Returned returned = new Returned();
             BeanUtils.copyProperties(this, returned);
             returned.publishAfterCommit();
+        }
+        //조리시작
+        if (Objects.equals(status, "Start")){
+            Started started = new Started();
+            BeanUtils.copyProperties(this, started);
+            started.publishAfterCommit();
+        }
+        //조리중
+        if (Objects.equals(status, "Cooking")){
+        	Cooking cooking = new Cooking();
+            BeanUtils.copyProperties(this, cooking);
+            cooking.publishAfterCommit();
+        }
+        //조리완료
+        if (Objects.equals(status, "Cooked")){
+        	Cooked cooked = new Cooked();
+            BeanUtils.copyProperties(this, cooked);
+            cooked.publishAfterCommit();
+        }
+        //조리취소
+        if (Objects.equals(status,"Canceled")){
+        	Canceled canceled = new Canceled();
+            BeanUtils.copyProperties(this, canceled);
+            canceled.publishAfterCommit();
         }
     }
 
@@ -93,20 +117,7 @@ public class Kitchen {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getProductId() {
-        return productId;
-    }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-    public Integer getQty() {
-        return qty;
-    }
-
-    public void setQty(Integer qty) {
-        this.qty = qty;
-    }
     public String getStatus() {
         return status;
     }
