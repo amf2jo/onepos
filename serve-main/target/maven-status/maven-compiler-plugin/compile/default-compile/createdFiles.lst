@@ -1,0 +1,9 @@
+onepos\Served.class
+onepos\PolicyHandler.class
+onepos\ServeApplication.class
+onepos\AbstractEvent$1.class
+onepos\config\kafka\KafkaProcessor.class
+onepos\Cooked.class
+onepos\AbstractEvent.class
+onepos\Serve.class
+onepos\ServeRepository.class
