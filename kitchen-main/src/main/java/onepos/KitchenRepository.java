@@ -2,9 +2,9 @@ package onepos;
 
 import java.util.List;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface KitchenRepository extends PagingAndSortingRepository<Kitchen, Long>{
+public interface KitchenRepository extends JpaRepository<Kitchen, Long>{
 	
-	List<Kitchen> findByOrderId(Long orderId);
+	List<Kitchen> findByOrderId(int orderId);
 }

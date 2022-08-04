@@ -13,9 +13,8 @@ public class Kitchen {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id; 
-    private Long orderId;
-    private Long deliveryId;
+    private int id; 
+    private int orderId;
     private String status;
 
     @PostPersist
@@ -110,11 +109,11 @@ public class Kitchen {
     }
 
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -126,20 +125,13 @@ public class Kitchen {
         this.status = status;
     }
 
-	public Long getOrderId() {
+	public int getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(Long orderId) {
+	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
 
-	public Long getDeliveryId() {
-		return deliveryId;
-	}
-
-	public void setDeliveryId(Long deliveryId) {
-		this.deliveryId = deliveryId;
-	}
 
 }

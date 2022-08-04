@@ -1,23 +1,14 @@
 package onepos.external;
 
+import lombok.Data;
+
+@Data
 public class Cancellation {
 
-    private Long id;
-    private Long orderId;
+    private int id;
+    private int orderId;
     private String status;
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public Long getOrderId() {
-        return orderId;
-    }
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
     public String getStatus() {
         return status;
     }
