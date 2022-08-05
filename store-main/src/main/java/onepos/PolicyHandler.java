@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import onepos.config.kafka.KafkaProcessor;
+import onepos.data.Sale;
+import onepos.data.saleRepository;
+import onepos.datakafka.Ordered;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -37,7 +40,7 @@ public class PolicyHandler{
                 sale.setStoreId(1111);
                 sale.setStoreName(ordered.getProductId());
                 sale.setSaleMenuId (1234);
-                sale.setSaleAmt("1234");
+                sale.setSaleAmt(ordered.getQty());
                 sale.setSaleQty(ordered.getQty());
                 SaleRepository.save(sale);
             // }catch (Exception e){
