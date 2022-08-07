@@ -1,23 +1,38 @@
-package onepos;
+package onepos.domain;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.BeanUtils;
+
+import java.sql.Date;
 import java.util.List;
 
 
 @Entity
-@Table(name="serve") //매장등록(회원가입)
+@Table(name="serve_table") //매장등록(회원가입)
+@DynamicInsert  //Null 있을 시
+@DynamicUpdate
 public class Serve {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id; // 서빙Table ID
+
+    @Column(name ="holeflag")
     private String holeflag; //홀.포장 구분
+    @Column(name ="tableNo")
     private int tableNo;  //테이블 번호
+    //@Column(name ="")
     //private List<integer> //주문 메뉴 리스트
+    @Column(name ="orderId")
     private int orderId; //주문 테이블 Key
+    @Column(name ="storeId")
     private int storeId; //매장 ID
+    @Column(name ="status")
     private String status; //서빙 진행사항
+    @Column(name ="regDate")
     private String regDate ; //저장 시간
 
     public int getId() {
@@ -74,6 +89,7 @@ public class Serve {
 
     public void setRegDate(String regDate) {
         this.regDate = regDate;
+
     }
 
     @PostPersist
@@ -107,7 +123,7 @@ public class Serve {
         served.publishAfterCommit();
     }
 
-    
+
 
 
 

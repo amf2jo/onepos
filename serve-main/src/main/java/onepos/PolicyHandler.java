@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import onepos.Cooked;
 import onepos.config.kafka.KafkaProcessor;
+import onepos.domain.Serve;
+import onepos.domain.ServeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;

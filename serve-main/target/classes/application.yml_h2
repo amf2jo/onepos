@@ -1,28 +1,23 @@
-# server:
-#   port: 8080
+#server:
+#  port: 8080
 ---
 
 spring:
   profiles: default
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://amf-3-2-onepostest.ckputrdkt11j.ap-northeast-2.rds.amazonaws.com:3306/ONEPOS?characterEncoding=UTF-8&serverTimezone=UTC
-    username: admin
-    password: chlrkddlwh
-
+  h2:
+    console:
+      enabled: true  # H2 웹 콘솔을 사용하겠다는 의미
+      path: /h2
   jpa:
-    hibernate:
-      ddl-auto: update
     properties:
       hibernate:
-        format_sql: true
         show_sql: true
-
+        format_sql: true
   cloud:
     stream:
       kafka:
         binder:
-          brokers: localhost:29092
+          brokers: localhost:9092
         streams:
           binder:
             configuration:
@@ -45,7 +40,7 @@ logging:
     org.hibernate.type: trace
     org.springframework.cloud: debug
 server:
-  port: 8081
+  port: 8080
 
 api:
   delivery:

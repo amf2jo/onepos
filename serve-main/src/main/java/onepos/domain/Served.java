@@ -1,4 +1,6 @@
-package onepos;
+package onepos.domain;
+
+import onepos.AbstractEvent;
 
 public class Served extends AbstractEvent {
 
