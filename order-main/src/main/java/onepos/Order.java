@@ -2,27 +2,20 @@ package onepos;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name="Order_table")
 public class Order {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
+    private int id;
 
     private int storeId; 
     private int tableNo;
     private OrderStatus status;
 
-    @ElementCollection
-    @CollectionTable(
-        name = "ORDER_ITEM",
-        joinColumns = @JoinColumn(name="id")
-    )
-    List<OrderItem> orderItems = new ArrayList<OrderItem>();
+    @Embedded
+    OrderItem orderItems = new OrderItem();
 
     // 주문했을 때 
     @PostPersist
@@ -31,7 +24,7 @@ public class Order {
         ordered.setId(this.getId());
         ordered.setOrderItems(this.getOrderItems());
         ordered.setStatus(this.getStatus());
-        // ordered.publishAfterCommit(); -- kafka 발행
+        ordered.publishAfterCommit(); // kafka 발행
     }
 
     //손님이 주문취소했을 때
@@ -40,16 +33,16 @@ public class Order {
         OrderCancelled ordercancelled = new OrderCancelled();
         ordercancelled.setId(this.getId());
         ordercancelled.setStatus(this.getStatus());
-        //ordercancelled.publishAfterCommit();
+        ordercancelled.publishAfterCommit();
     }
 
-    public long getId(){
+    public int getId(){
         return id;
     }
-    public List<OrderItem> getOrderItems() {
+    public OrderItem getOrderItems() {
         return orderItems;
     }
-    public void setOrderItems(List<OrderItem> orderItems) {
+    public void setOrderItems(OrderItem orderItems) {
         this.orderItems = orderItems;
     }
     public int getTableNo() {

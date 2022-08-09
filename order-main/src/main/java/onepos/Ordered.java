@@ -3,14 +3,14 @@ import java.util.*;
 
 public class Ordered extends AbstractEvent {
 
-    private Long id;
+    private int id;
     private OrderStatus status;
-    List<OrderItem> orderItems = new ArrayList<OrderItem>();
+    OrderItem orderItems = new OrderItem();
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
     public OrderStatus getStatus() {
@@ -19,10 +19,10 @@ public class Ordered extends AbstractEvent {
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
-    public List<OrderItem> getOrderItems(){
+    public OrderItem getOrderItems(){
         return orderItems;
     }
-    public void setOrderItems(List<OrderItem> orderItems){
+    public void setOrderItems(OrderItem orderItems){
         this.orderItems= orderItems;
     }
 }
