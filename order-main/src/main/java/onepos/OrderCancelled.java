@@ -3,13 +3,13 @@ import java.util.*;
 
 public class OrderCancelled extends AbstractEvent {
 
-    private Long id;
+    private int id;
     private OrderStatus status;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
     public OrderStatus getStatus() {

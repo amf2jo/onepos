@@ -54,7 +54,7 @@ logging:
     org.hibernate.type: trace
     org.springframework.cloud: debug
 server:
-  port: 8085
+  port: 8090
 
 api:
   delivery:
