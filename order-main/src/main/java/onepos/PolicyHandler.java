@@ -19,42 +19,47 @@ public class PolicyHandler{
 
     }
 
-    // @Autowired
-    // OrderRepository orderRepository;
+    @Autowired
+    OrderRepository orderRepository;
 
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverPaid(@Payload Paid paid){
+
+         if(paid.isMe()){
+            Optional<Order> orderOptional = orderRepository.findById(paid.getOrderId());
+            Order order = orderOptional.get();
+            order.setStatus(OrderStatus.조리중);
+
+            orderRepository.save(order);
+            System.out.println("##### listener order paid : " + paid.toJson());
+        }
+    }
+    
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverRefunded(@Payload Refunded refunded){
+
+         if(refunded.isMe()){
+            Optional<Order> orderOptional = orderRepository.findById(refunded.getOrderId());
+            Order order = orderOptional.get();
+            order.setStatus(OrderStatus.주문취소됨);
+
+            orderRepository.save(order);
+            System.out.println("##### listener order refunded : " + refunded.toJson());
+        }
+    }
+    
     // @StreamListener(KafkaProcessor.INPUT)
-    // public void wheneverShipped_UpdateStatus(@Payload Shipped shipped){
+    // public void whenever(@Payload Refunded refunded){
 
-    //     if(shipped.isMe()){
-    //         Optional<O> orderOptional = kitchenRepository.findById(shipped.getOrderId());
-    //         Kitchen order = orderOptional.get();
-    //         order.setStatus(shipped.getStatus());
+    //      if(refunded.isMe()){
+    //         Optional<Order> orderOptional = orderRepository.findById(refunded.getOrderId());
+    //         Order order = orderOptional.get();
+    //         order.setStatus(OrderStatus.주문취소됨);
 
-    //         kitchenRepository.save(order);
-    //         System.out.println("##### listener UpdateStatus : " + shipped.toJson());
+    //         orderRepository.save(order);
+    //         System.out.println("##### listener order refunded : " + refunded.toJson());
     //     }
     // }
     
-    // @StreamListener(KafkaProcessor.INPUT)
-    // public void wheneverShipped_UpdateStatusTest(@Payload Delivered delivered){
-
-    //     if(delivered.isMe()){
-    //         System.out.println("##### listener Delivered!!!!!!!!!!### : " + delivered.toJson());
-    //     }
-    // }
-
-
-    // @StreamListener(KafkaProcessor.INPUT)
-    // public void wheneverReviewed_UpdateStatus(@Payload Reviewed reviewed){
-
-    //     if(reviewed.isMe()){
-    //         Optional<Kitchen> orderOptional = kitchenRepository.findById(reviewed.getId());
-    //         Kitchen order = orderOptional.get();
-    //         order.setStatus(reviewed.getStatus());
-
-    //         kitchenRepository.save(order);
-    //         System.out.println("##### listener UpdateStatus : " + reviewed.toJson());
-    //     }
-    // }
 
 }
