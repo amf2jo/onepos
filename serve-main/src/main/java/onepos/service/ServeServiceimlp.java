@@ -3,6 +3,8 @@ package onepos.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.retry.support.RetrySimulation.SleepSequence;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class ServeServiceimlp implements ServeService{
     return serveRepository.findById(serveId);
   }
   //서빙 로봇 서빙요청
-
+  @Transactional
   @Override
   public void requestServingStart(int serveId) {
     Optional<Serve> optional = serveRepository.findById(serveId);
@@ -55,6 +57,7 @@ public class ServeServiceimlp implements ServeService{
 
 
   //포장 기기 시작요청
+  @Transactional
   @Override
   public void requestWrapStart(int serveId)  {
     Optional<Serve> optional = serveRepository.findById(serveId);
@@ -67,7 +70,7 @@ public class ServeServiceimlp implements ServeService{
     } catch (InterruptedException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
-    }
+    } 
 
     serve.setStatus("Finished"); //로봇 포장 기기 리턴 별도 ㅜㅜ ..
     serveRepository.save(serve);

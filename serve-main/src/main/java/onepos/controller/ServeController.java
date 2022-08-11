@@ -47,9 +47,11 @@ import java.util.List;
 
 
     // //서빙 로봇 서빙요청
-    // @PatchMapping("/lists/{serveId}")
-    // void requestServingStart(int serveId);
-    // public
+    @PatchMapping("/serves/serve/{serveId}")
+    public void requestServingStart(@PathVariable("serveId") int serveId){
+      serveService.requestServingStart(serveId);
+    }
+
 
 
 
