@@ -10,16 +10,18 @@ public class Order {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    private int storeId; 
+    private int storeId;
     private int tableNo;
     private OrderStatus status;
 
     @Embedded
     OrderItem orderItems = new OrderItem();
 
-    // 주문했을 때 
-    @PostPersist
-    public void onPostPersist(){
+    // 주문했을 때
+    @PrePersist
+    public void onPrePersist(){
+        this.setStatus(OrderStatus.orderRequest);
+        System.out.println(this.getStatus());
         Ordered ordered = new Ordered();
         ordered.setId(this.getId());
         ordered.setOrderItems(this.getOrderItems());
