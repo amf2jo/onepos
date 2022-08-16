@@ -1,5 +1,7 @@
 #FrontEnd Template 구동<br>
 
+1. frontend template directory로 이동
+cd material~~ <br>
 npm install<br>
 npm start<br>
 
