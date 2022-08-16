@@ -56,5 +56,21 @@ public class PolicyHandler{
             System.out.println("##### listener UpdateStatus : " + reviewed.toJson());
         }
     }
+    
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverOrderd(@Payload Ordered ordered){
+
+        if(ordered.isMe()){
+            System.out.println("##### listener UpdateStatus : " + ordered.toJson());
+            Kitchen order = new Kitchen();
+            order.setOrderId(ordered.getId());
+            order.setStatus("Request");
+            order.setOrderStatus(ordered.getStatus());
+            
+            order.setOrderItems(ordered.getOrderItems());
+            kitchenRepository.save(order);
+        }
+    }
+
 
 }

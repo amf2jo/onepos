@@ -1,38 +1,28 @@
 package onepos;
+import java.util.*;
 
 public class Ordered extends AbstractEvent {
 
-    private Long id;
-    private String productId;
-    private Integer qty;
-    private String status;
+    private int id;
+    private OrderStatus status;
+    OrderItem orderItems = new OrderItem();
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
-
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-    public Integer getQty() {
-        return qty;
-    }
-
-    public void setQty(Integer qty) {
-        this.qty = qty;
-    }
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
-
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+    public OrderItem getOrderItems(){
+        return orderItems;
+    }
+    public void setOrderItems(OrderItem orderItems){
+        this.orderItems= orderItems;
     }
 }

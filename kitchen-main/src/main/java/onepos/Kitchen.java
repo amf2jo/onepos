@@ -16,6 +16,9 @@ public class Kitchen {
     private int id; 
     private int orderId;
     private String status;
+    private OrderStatus orderStatus;
+    @Embedded
+    OrderItem orderItems = new OrderItem();
 
     @PostPersist
     public void onPostPersist(){
@@ -132,6 +135,22 @@ public class Kitchen {
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
+
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+	 public OrderItem getOrderItems() {
+	        return orderItems;
+	    }
+	    public void setOrderItems(OrderItem orderItems) {
+	        this.orderItems = orderItems;
+	    }
+
+
 
 
 }
