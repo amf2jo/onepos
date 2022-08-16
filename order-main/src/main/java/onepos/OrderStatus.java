@@ -1,7 +1,6 @@
 package onepos;
 
 public enum OrderStatus {
-    주문요청,  주문취소요청, 조리중, 주문취소됨, 완료
-
-
+    orderRequest,  cancelRequest, cooking, canceled, served
+   // 주문 요청, 주문 취소 요청, 조리중, 취소됨, 서빙됨
 }

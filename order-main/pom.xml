@@ -18,9 +18,8 @@
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>
 		<spring-cloud-stream.version>Germantown.SR1</spring-cloud-stream.version>
-		<start-class>onepos.OrderApplication</start-class>
 	</properties>
-		
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
