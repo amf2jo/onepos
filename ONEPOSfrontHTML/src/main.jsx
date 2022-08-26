@@ -19,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/create" element={<Create />} />
         <Route path="/update/:id" element={<Update />} />
         <Route path="/sttest" element={<Sttest />} />
+        <Route path="/order" element ={<Order />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
