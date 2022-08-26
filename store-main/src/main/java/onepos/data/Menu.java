@@ -8,7 +8,7 @@ public class Menu {
 
     @Id @GeneratedValue
     int menuId;
-    int storeId ; //매장ID로 조회 하는 방법 구현 필요
+    int storeId ; 
     String menuNm;
     int amt ;
     int qty ;

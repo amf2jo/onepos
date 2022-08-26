@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>화면리스트</title>
+  <link rel="stylesheet" href="/node_modules/tui-time-picker/dist/tui-time-picker.css">
+  <link rel="stylesheet" href="/node_modules/tui-date-picker/dist/tui-date-picker.css">
+  <link rel="stylesheet" href="/node_modules/tui-grid/dist/tui-grid.css">
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="/node_modules/tui-code-snippet/tui-code-snippet.min.js"></script>
+  <script src="/node_modules/tui-time-picker/dist/tui-time-picker.min.js"></script>
+  <script src="/node_modules/tui-date-picker/dist/tui-date-picker.min.js"></script>
+  <script src="/node_modules/tui-grid/dist/tui-grid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <style>
+    * { margin: 0 auto; }
+  </style>
+  <script language="javascript">
+
+$(function() {
+    $('#order').click(function(){
+        location.href = "./order.html";
+    });
+    $('#kitchen').click(function(){
+        location.href = "./kitchen.html";
+    });
+
+    $('#menuList').click(function(){
+        location.href = "./menuList.html";
+    });
+});
+    </script>
+
+</head>
+<body>
+<div id="wrap" style="width: 30%;">
+  <div>
+    <div style="display: flex; flex-flow: row nowrap; margin-top: 20px; margin-bottom: 20px;">
+      <div style="width: 60%;"><img src="/node_modules/bootstrap-icons/icons/stars.svg">화면리스트</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px; margin-bottom: 20px; width: 50%;">
+    <div style="margin-top: 20px; margin-bottom: 20px; width: 100%;">
+      <div><button type="button" id="menuList" class="btn btn-primary" data-bs-toggle="button">매뉴등록</button></div>
+    </div>
+    <div style="margin-top: 20px; margin-bottom: 20px; width: 100%;">
+      <div><button type="button" id="order" class="btn btn-primary" data-bs-toggle="button">주문</button></div>
+    </div>
+    <div style="margin-top: 20px; margin-bottom: 20px; width: 100%;">
+      <div><button type="button" id="kitchen" class="btn btn-primary" data-bs-toggle="button">주방</button></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

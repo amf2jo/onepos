@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>메뉴관리</title>
+    <link rel="stylesheet" href="/node_modules/tui-time-picker/dist/tui-time-picker.css">
+    <link rel="stylesheet" href="/node_modules/tui-date-picker/dist/tui-date-picker.css">
+    <link rel="stylesheet" href="/node_modules/tui-grid/dist/tui-grid.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/tui-code-snippet/tui-code-snippet.min.js"></script>
+    <script src="/node_modules/tui-time-picker/dist/tui-time-picker.min.js"></script>
+    <script src="/node_modules/tui-date-picker/dist/tui-date-picker.min.js"></script>
+    <script src="/node_modules/tui-grid/dist/tui-grid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<style>
+    * { margin: 0 auto; }
+</style>
+<body>
+<script>
+
+var grid;
+var isUrl = "http://localhost:8085";
+var storeId= "120120" // 일단 하드코딩 . jwt 는 포기 . 페이지 이동시 넘김 ?
+
+$(function() {
+
+grid = new tui.Grid({
+      el: document.getElementById('grid'),
+      //data: dataSource,
+      scrollX: false,
+      scrollY: false,
+      rowHeaders: ['rowNum'],
+      columns: [
+        { header: '메뉴ID', name: 'menuId', align: 'center'},
+        { header: '메뉴명', name: 'menuNm', align: 'center' },
+        { header: '가격', name: 'amt', align: 'center' },
+        { header: '수량', name: 'qty', align: 'center' }
+      ]
+    });
+
+
+
+/*
+    grid.on('focusChange', function(ev) {
+      grid.setSelectionRange({
+        start: [ev.rowKey, 0],
+        end: [ev.rowKey, grid.getColumns().length]
+      });
+    });
+*/
+
+    grid.on('click', function(ev) {
+      /**
+        *   이벤트 객체는 아래와 같은 정보를 담고 있다.
+        *  {
+        *   // 이벤트 발생 종류(cell 편집, 붙여넣기, 키맵을 통한 삭제)
+        *   origin: 'cell' | 'paste' | 'delete',
+        *   // 변경 내용
+        *   changes: [
+        *      // beforeChange 인 경우에는 value는 현재 값, nextValue는 변경 예정 값(수정 또는 삭제 수행 후 적용될 값)
+        *      { rowKey, columnName, value, nextValue }, ...
+        *
+        *      // afterChange 인 경우에는 value는 변경이 적용된 후 값, prevValue는 이전 셀의 값(beforeChange 의 value와 동일)
+        *      { rowKey, columnName, value, prevValue }, ...
+        *    ]
+        *  }
+        */
+/*
+      console.log(ev);
+      console.log("ev.rowKey : " + ev.rowKey);
+      console.log("grid.getData()[ev.rowKey] : " + grid.getData()[ev.rowKey]);
+
+      console.log(grid.getData()[ev.rowKey].storeId);
+      console.log(grid.getData()[ev.rowKey].menuId);
+      console.log(grid.getData()[ev.rowKey].menuNm);
+      console.log(grid.getData()[ev.rowKey].amt);
+      console.log(grid.getData()[ev.rowKey].qty);
+*/
+
+        $('#menuId').val(grid.getData()[ev.rowKey].menuId);
+        $('#menuNm').val(grid.getData()[ev.rowKey].menuNm);
+        $('#amt').val(grid.getData()[ev.rowKey].amt);
+        $('#qty').val(grid.getData()[ev.rowKey].qty);
+
+    });
+
+
+
+
+
+    $('#searchList').click(function(){
+   //   grid.request('readData');
+
+        axios
+          .get( isUrl + '/menu/' + storeId )
+          .then((res) => {
+              console.log(res.data.respdata);
+              grid.resetData(res.data.respdata);
+          });
+
+    });
+
+    $('#save').click(function(){
+
+
+        var menuNm = $('#menuNm').val();
+        var amt = $('#amt').val();
+        var qty = $('#qty').val();
+
+
+        console.log( 'menuNm : ' + menuNm );
+        console.log( 'amt : ' + amt );
+        console.log( 'qty : ' + qty );
+
+
+        if(menuNm == ""){
+            alert('메뉴명을 입력하세요');
+            return false;
+        }
+        if(amt == ""){
+            alert('가격을 입력하세요');
+            return false;
+        }
+        if(qty == ""){
+            alert('수량을 입력하세요');
+            return false;
+        }
+
+        axios
+          .post( isUrl + '/menus',{
+
+            amt     : amt,
+            menuNm  : menuNm,
+            qty     : qty,
+            storeId : storeId,
+
+          })
+          .then((res) => {
+           // console.log(res.data.respdata);
+
+          })
+          .catch(function (error) {
+          // 에러 핸들링
+            console.log(error);
+          })
+          .then(function () {
+          // 항상 실행되는 영역 callback
+           axios.get('http://localhost:8085' + '/menu/' + storeId ).then((res) => {
+                grid.resetData(res.data.respdata);
+           });
+          });
+
+    });
+
+    $('#update').click(function(){
+
+
+        var menuNm = $('#menuNm').val();
+        var menuId = $('#menuId').val();
+        var amt = $('#amt').val();
+        var qty = $('#qty').val();
+
+
+        console.log( 'menuNm : ' + menuNm );
+        console.log( 'amt : ' + amt );
+        console.log( 'qty : ' + qty );
+
+
+
+        if(amt == ""){
+            alert('가격을 입력하세요');
+            return false;
+        }
+        if(qty == ""){
+            alert('수량을 입력하세요');
+            return false;
+        }
+
+        axios
+          .patch( isUrl + '/menus/' + menuId ,{
+
+            amt     : amt,
+            menuNm  : menuNm,
+            qty     : qty,
+
+
+          })
+          .then((res) => {
+           // console.log(res.data.respdata);
+
+          })
+          .catch(function (error) {
+          // 에러 핸들링
+            console.log(error);
+          })
+          .then(function () {
+          // 항상 실행되는 영역 callback
+           axios.get('http://localhost:8085' + '/menu/' + storeId ).then((res) => {
+                grid.resetData(res.data.respdata);
+           });
+          });
+
+    });
+
+})
+
+
+
+tui.Grid.applyTheme('normal', {
+    cell: {
+        normal: {
+            background: "#fff",
+            border: "#e0e0e0",
+            showVerticalBorder: true,
+            showHorizontalBorder: true,
+        },
+        header: {
+            background: "#eaeaea",
+            border: "#e0e0e0",
+            showVerticalBorder: true,
+            showHorizontalBorder: true,
+        },
+        rowHeader :{
+            background: "#eaeaea",
+            border: "#e0e0e0",
+            showVerticalBorder: true,
+            showHorizontalBorder: true,
+        },
+    }
+});
+
+</script>
+
+  <div id="wrap" style="width: 90%;">
+    <div>
+        <div style="display: flex; flex-flow: row nowrap; margin-top: 20px; margin-bottom: 20px;">
+            <div style="width: 33%;"><img src="/node_modules/bootstrap-icons/icons/stars.svg">메뉴등록</div>
+            <div>
+                <button type="button" id="update" class="btn btn-primary" data-bs-toggle="button">수정</button>
+                <button type="button" id="save" class="btn btn-primary" data-bs-toggle="button">저장</button>
+            </div>
+        </div>
+        <div style="margin-top: 20px; margin-bottom: 20px;">
+
+            <div class="input-group input-group-sm mb-3" style="width: 60%;">
+                <span class="input-group-text" >메뉴명</span>
+                <input type="text" id="menuNm" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            </div>
+            <div class="input-group input-group-sm mb-3" style="width: 60%;">
+                <span class="input-group-text" >가격</span>
+                <input type="text" id="amt" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            </div>
+            <div class="input-group input-group-sm mb-3" style="width: 60%;">
+                <span class="input-group-text" >수량</span>
+                <input type="text" id="qty" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+
+                <input type="hidden" id="menuId" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div style="display: flex; flex-flow: row nowrap; margin-top: 20px; margin-bottom: 20px;">
+            <div style="width: 33%;"><img src="/node_modules/bootstrap-icons/icons/stars.svg">메뉴조회</div>
+            <div>
+                <button type="button" id="searchList" class="btn btn-primary" data-bs-toggle="button">조회</button>
+            </div>
+        </div>
+    </div>
+    <div id="grid" style="width: 90%;"></div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>매장등록</title>
+  <link rel="stylesheet" href="/node_modules/tui-time-picker/dist/tui-time-picker.css">
+  <link rel="stylesheet" href="/node_modules/tui-date-picker/dist/tui-date-picker.css">
+  <link rel="stylesheet" href="/node_modules/tui-grid/dist/tui-grid.css">
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="/node_modules/tui-code-snippet/tui-code-snippet.min.js"></script>
+  <script src="/node_modules/tui-time-picker/dist/tui-time-picker.min.js"></script>
+  <script src="/node_modules/tui-date-picker/dist/tui-date-picker.min.js"></script>
+  <script src="/node_modules/tui-grid/dist/tui-grid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <style>
+    * { margin: 0 auto; }
+  </style>
+  <script language="javascript">
+
+var isUrl = "http://localhost:8085";
+$(function() {
+
+    $('#btnJoin').click(function(){
+        var storeId = $('#storeId').val();
+        var storeName = $('#storeName').val();
+        var repName  = $('#repName ').val();
+        var repPhonNum = $('#repPhonNum').val();
+        var passWd = $('#passWd').val();
+        var tableCnt = $('#tableCnt').val();
+
+        axios
+          .post( isUrl + '/stores' ,{
+            storeId     : storeId,
+            storeName   : storeName,
+            repName     : repName,
+            repPhonNum  : repPhonNum,
+            passWd      : passWd,
+            tableCnt    : tableCnt,
+          })
+          .then((res) => {
+            console.log(res.data);
+
+              if(null != res.data){
+                alert("등록되었습니다.");
+                location.href = "../index.html";
+              } else {
+                alert("등록된 사업자가 아닙니다.");
+              }
+          })
+
+    });
+});
+</script>
+
+</head>
+<body>
+<div id="wrap" style="width: 30%;">
+  <div>
+    <div style="display: flex; flex-flow: row nowrap; margin-top: 20px; margin-bottom: 20px;">
+      <div style="width: 60%;"><img src="/node_modules/bootstrap-icons/icons/stars.svg">매장등록</div>
+    </div>
+    <div style="margin-top: 20px; margin-bottom: 20px;">
+      <div class="input-group input-group-sm mb-3" style="width: 60%;">
+        <span class="input-group-text" >사업자번호</span>
+        <input type="text" id="storeId" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+      </div>
+      <div class="input-group input-group-sm mb-3" style="width: 60%;">
+        <span class="input-group-text" >매장명</span>
+        <input type="text" id="storeName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+      </div>
+      <div class="input-group input-group-sm mb-3" style="width: 60%;">
+        <span class="input-group-text" >대표자명</span>
+        <input type="text" id="repName" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+      </div>
+      <div class="input-group input-group-sm mb-3" style="width: 60%;">
+        <span class="input-group-text" >대표자연락처</span>
+        <input type="text" id="repPhonNum" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+      </div>
+      <div class="input-group input-group-sm mb-3" style="width: 60%;">
+        <span class="input-group-text" >패스워드</span>
+        <input type="text" id="passWd" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+      </div>
+      <div class="input-group input-group-sm mb-3" style="width: 60%;">
+        <span class="input-group-text" >매장 테이블 수</span>
+        <input type="text" id="tableCnt" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-flow: row nowrap; margin-top: 20px; margin-bottom: 20px; width: 60%;">
+    <div style="margin-top: 20px; margin-bottom: 20px; width: 50%;">
+      <div><button type="button" id="btnJoin" class="btn btn-primary" data-bs-toggle="button">매장등록</button></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
