@@ -62,10 +62,18 @@ public class PolicyHandler{
 
         if(ordered.isMe()){
             System.out.println("##### listener UpdateStatus : " + ordered.toJson());
+            System.out.println("##### listener UpdateStatus : " + ordered.getStatus());
             Kitchen order = new Kitchen();
             order.setOrderId(ordered.getId());
-            order.setStatus("Request");
-            order.setOrderStatus(ordered.getStatus());
+            if(ordered.getStatus().equals(OrderStatus.orderRequest)) {
+            	System.out.println("주문요청");
+            	order.setStatus("주문요청");
+            	order.setNextStep("주문승인");
+            }else {
+            	System.out.println("확인불가");
+            	order.setStatus("Request");
+            	
+            }
             
             order.setOrderItems(ordered.getOrderItems());
             kitchenRepository.save(order);

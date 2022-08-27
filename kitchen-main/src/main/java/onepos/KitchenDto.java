@@ -7,4 +7,5 @@ public class KitchenDto {
 	private int id;
 	private int orderId;
 	private String status;
+	private String nextStep;
 }

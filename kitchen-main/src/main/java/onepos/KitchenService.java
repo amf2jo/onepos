@@ -1,6 +1,7 @@
 package onepos;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,5 +28,18 @@ public class KitchenService {
 
 		return kitchenRepository.saveAll(kitchenList);
 	}
-	
+	public List<Kitchen> findAll(){
+		return  kitchenRepository.findAll();
+	}
+
+	public List<Kitchen> updateById(int id, KitchenDto requestDto) {
+		 List<Kitchen> kitchenList = kitchenRepository.findById(id);
+		 for(Kitchen kitchen : kitchenList) {
+			 kitchen.setStatus(requestDto.getNextStep());
+		 }
+		 System.out.println(kitchenList);
+		 
+
+		 return kitchenRepository.saveAll(kitchenList);
+	}
 }
