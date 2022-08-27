@@ -1,0 +1,7 @@
+{
+    "prod": {
+        "config_id": "prod",
+        "app_name": "react-ui",
+        "node_port": "80"
+    }
+}
