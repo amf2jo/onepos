@@ -24,7 +24,7 @@ public class MenuRespDto {
     	this.menuNm =menu.getMenuNm();
       this.amt =menu.getAmt();
       this.qty =menu.getQty();
-
+      this.storeId =menu.getStoreId();
     }
 
 

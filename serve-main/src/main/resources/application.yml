@@ -79,11 +79,11 @@ spring:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
       bindings:
         event-in:
-          group: order
-          destination: clothrental
+          group: serve
+          destination: onepos
           contentType: application/json
         event-out:
-          destination: clothrental
+          destination: onepos
           contentType: application/json
 
 api:

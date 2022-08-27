@@ -37,7 +37,7 @@ public class PolicyHandler{
     @StreamListener(KafkaProcessor.INPUT)  //Test . 서빙 완료시 저장되도록 변경
     public void whenCookedFinished(@Payload  Cooked cooked){
 
-        if(cooked.isMe()&& cooked.getStatus().equals("Finish")){
+        if(cooked.isMe()&& cooked.getStatus().equals("Cooked")){
             Serve serve = new Serve();
 
             serve.setHoleflag(cooked.getHoleflag());

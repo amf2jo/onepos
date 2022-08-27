@@ -1,11 +1,10 @@
-#FrontEnd Template 구동<br>
+#FrontEnd Template 구동
 
-1. frontend template directory로 이동
-cd material~~ <br>
-npm install<br>
-npm start<br>
+1. frontend template directory로 이동  
+cd material~~  
+npm install  
+npm start  
 
-※ 오류 해결<br>
-- 'react-scripts'은(는) 내부 또는 외부 명령, 실행할 수 ... <br>
-npm install -g react-scripts <br>
-
+※ 오류 해결  
+- 'react-scripts'은(는) 내부 또는 외부 명령, 실행할 수 ...  
+npm install -g react-scripts   

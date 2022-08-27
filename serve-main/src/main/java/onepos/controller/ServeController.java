@@ -1,6 +1,7 @@
 package onepos.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,8 @@ import java.util.List;
 
 
 
- @RestController
+@CrossOrigin(origins = "*")
+@RestController
 //  @RequestMapping("/serves")
  public class ServeController {
 
@@ -34,6 +36,7 @@ import java.util.List;
     }
 
     //서빙목록 조회
+    @CrossOrigin(origins = "*")
     @GetMapping("/serves/lists")
     public List<Serve> getServeList() {
       return serveService.getServeList();

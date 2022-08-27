@@ -6,11 +6,11 @@ spring:
   profiles: default
 
   #EC2 설치 마리아DB. H2 사용시 9~13라인 주석처리
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://amf-3-2-onepostest.ckputrdkt11j.ap-northeast-2.rds.amazonaws.com:3306/ONEPOS?characterEncoding=UTF-8&serverTimezone=UTC
-    username: admin
-    password: chlrkddlwh
+  # datasource:
+  #   driver-class-name: org.mariadb.jdbc.Driver
+  #   url: jdbc:mariadb://amf-3-2-onepostest.ckputrdkt11j.ap-northeast-2.rds.amazonaws.com:3306/ONEPOS?characterEncoding=UTF-8&serverTimezone=UTC
+  #   username: admin
+  #   password: chlrkddlwh
 
   h2: # H2 사용시 웹브라우져 DB 접속 http://localhost:8085/h2-consol
     console:

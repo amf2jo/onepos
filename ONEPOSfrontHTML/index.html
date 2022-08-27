@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인</title>
+  <link rel="stylesheet" href="/node_modules/tui-time-picker/dist/tui-time-picker.css">
+  <link rel="stylesheet" href="/node_modules/tui-date-picker/dist/tui-date-picker.css">
+  <link rel="stylesheet" href="/node_modules/tui-grid/dist/tui-grid.css">
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="/node_modules/tui-code-snippet/tui-code-snippet.min.js"></script>
+  <script src="/node_modules/tui-time-picker/dist/tui-time-picker.min.js"></script>
+  <script src="/node_modules/tui-date-picker/dist/tui-date-picker.min.js"></script>
+  <script src="/node_modules/tui-grid/dist/tui-grid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <style>
+    * { margin: 0 auto; }
+  </style>
+  <script language="javascript">
+
+var isUrl = "http://localhost:8085";
+$(function() {
+
+    $('#login').click(function(){
+        var storeId = $('#storeId').val();
+        var passWd = $('#passWd').val();
+
+        axios
+          .post( isUrl + '/login' ,{
+            storeId : storeId,
+            passWd  : passWd,
+          })
+          .then((res) => {
+            console.log(res.data);
+
+            if(1 == res.data.satuteCode){
+              location.href = "./src/main.html";
+            } else {
+              alert("로그인하지 못했습니다.");
+            }
+           // location.href = "./src/menuList.html";
+          })
+          .catch(function (error) {
+          // 에러 핸들링
+            console.log(error);
+            alert("로그인하지 못했습니다." + error);
+          })
+    });
+
+    $('#join').click(function(){
+        location.href = "./src/join.html";
+    });
+});
+    </script>
+
+</head>
+<body>
+<div id="wrap" style="width: 30%;">
+  <div>
+    <div style="display: flex; flex-flow: row nowrap; margin-top: 20px; margin-bottom: 20px;">
+      <div style="width: 60%;"><img src="/node_modules/bootstrap-icons/icons/stars.svg">로그인</div>
+    </div>
+    <div style="margin-top: 20px; margin-bottom: 20px;">
+      <div class="input-group input-group-sm mb-3" style="width: 60%;">
+        <span class="input-group-text" >사업자번호</span>
+        <input type="text" id="storeId" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+      </div>
+      <div class="input-group input-group-sm mb-3" style="width: 60%;">
+        <span class="input-group-text" >패스워드</span>
+        <input type="text" id="passWd" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-flow: row nowrap; margin-top: 20px; margin-bottom: 20px; width: 50%;">
+    <div style="margin-top: 20px; margin-bottom: 20px; width: 100%;">
+      <div><button type="button" id="join" class="btn btn-primary" data-bs-toggle="button">매장등록</button></div>
+    </div>
+    <div style="margin-top: 20px; margin-bottom: 20px; width: 100%;">
+      <div><button type="button" id="login" class="btn btn-primary" data-bs-toggle="button">로그인</button></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
