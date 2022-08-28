@@ -1,0 +1,7 @@
+{
+    "dev": {
+        "config_id": "dev",
+        "app_name": "react-ui",
+        "node_port": "80"
+    }
+}

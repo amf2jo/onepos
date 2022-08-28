@@ -17,6 +17,8 @@ public class Kitchen {
     private int orderId;
     private String status;
     private OrderStatus orderStatus;
+    private String nextStep;
+    
     @Embedded
     OrderItem orderItems = new OrderItem();
 
@@ -149,6 +151,14 @@ public class Kitchen {
 	    public void setOrderItems(OrderItem orderItems) {
 	        this.orderItems = orderItems;
 	    }
+
+		public String getNextStep() {
+			return nextStep;
+		}
+
+		public void setNextStep(String nextStep) {
+			this.nextStep = nextStep;
+		}
 
 
 

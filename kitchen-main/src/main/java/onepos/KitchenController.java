@@ -30,9 +30,21 @@ import java.util.Optional;
 		 //Optional<ArrayList<Kitchen>> CookingList =
 		 return kitchenService.findByOrderId(id);
 	 }
+	 @GetMapping("kitchens")
+	 public List<Kitchen> getKitchens() {
+		 //Optional<ArrayList<Kitchen>> CookingList =
+		 return kitchenService.findAll();
+	 }
 	 @PutMapping("orders/{id}")
 	 public List<Kitchen> updateByOrderId(@PathVariable("id") int orderId, @RequestBody KitchenDto requestDto) {
 		 //Optional<ArrayList<Kitchen>> CookingList =
 		 return kitchenService.updateByOrderId(orderId, requestDto);
+	 }
+	 @PutMapping("kitchens/{id}")
+	 public List<Kitchen> updateKitchens(@PathVariable int id, @RequestBody KitchenDto requestDto) {
+		 //Optional<ArrayList<Kitchen>> CookingList =
+		 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~여기왔다!!!~~~~~~~~~~~~" + requestDto);
+		 //return kitchenService.findAll();
+		 return kitchenService.updateById(id, requestDto);
 	 }
  }
