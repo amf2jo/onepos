@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>주문</title>
+    <link rel="stylesheet" href="/node_modules/tui-time-picker/dist/tui-time-picker.css">
+    <link rel="stylesheet" href="/node_modules/tui-date-picker/dist/tui-date-picker.css">
+    <link rel="stylesheet" href="/node_modules/tui-grid/dist/tui-grid.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/tui-code-snippet/tui-code-snippet.min.js"></script>
+    <script src="/node_modules/tui-time-picker/dist/tui-time-picker.min.js"></script>
+    <script src="/node_modules/tui-date-picker/dist/tui-date-picker.min.js"></script>
+    <script src="/node_modules/tui-grid/dist/tui-grid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<style>
+    * { margin: 0 auto; }
+</style>
+<body>
+<script>
+
+var grid;
+var grid2;
+var menuUrl = "http://localhost:8085"
+var isUrl = "http://localhost:8090";
+var storeId= "120120"; // 일단 하드코딩 . jwt 는 포기 . 페이지 이동시 넘김 ?
+var tableId = "1";
+
+$(function() {
+
+    grid = new tui.Grid({
+        el: document.getElementById('grid'),
+        //data: dataSource,
+        scrollX: false,
+        scrollY: false,
+        rowHeaders: ['rowNum', 'checkbox'],
+        columns: [
+            { header: '메뉴ID', name: 'menuId', align: 'center'},
+            { header: '메뉴명', name: 'menuNm', align: 'center' },
+            { header: '가격', name: 'amt', align: 'center', editor: 'text', formatter({value}) { return `${value}원` }},
+            { header: '수량', name: 'qty', align: 'center' , editor:'text'}
+        ]
+    });
+
+    // 로딩 시 메뉴 자동 조회
+    axios
+    .get( menuUrl + '/menu/' + storeId )
+    .then((res) => {
+        console.log(res.data.respdata);
+        grid.resetData(res.data.respdata);
+    });
+
+    grid2 = new tui.Grid({
+        el: document.getElementById('grid2'),
+        //data: dataSource,
+        scrollX: false,
+        scrollY: false,
+        rowHeaders: ['rowNum'],
+        columns: [
+            { header: '메뉴ID', name: 'menuId', align: 'center'},
+            { header: '메뉴명', name: 'menuNm', align: 'center' },
+            { header: '가격', name: 'amt', align: 'center', editor: 'text', formatter({value}) { return `${value}원` }},
+            { header: '수량', name: 'qty', align: 'center' , editor:'text'},
+            { header: '가격', name: 'sum', align: 'center', editor: 'text', formatter({value}) { return `${value}원` }}
+        ],
+        summary:{
+            position :'bottom',
+            height:100,
+            columnContent: {
+                sum :{
+                    template(summary){
+                        return '합계 : '+summary.sum+'원';
+                    }
+                }
+
+            }
+        }
+    });
+
+
+    grid.on('check', (ev) => {
+        $('#menuId').val(grid.getData()[ev.rowKey].menuId);
+        $('#menuNm').val(grid.getData()[ev.rowKey].menuNm);
+        $('#amt').val(grid.getData()[ev.rowKey].amt);
+        $('#qty').val(grid.getData()[ev.rowKey].qty);
+        //console.log($('#menuId').val() +" "+$('#menuNm').val() +" "+$('#amt').val() +" "+$('#qty').val());
+
+        var rowData = { menuId : grid.getData()[ev.rowKey].menuId,
+                         menuNm : grid.getData()[ev.rowKey].menuNm,
+                         amt : grid.getData()[ev.rowKey].amt,
+                         qty : grid.getData()[ev.rowKey].qty,
+                         sum : Number(grid.getData()[ev.rowKey].amt)*Number(grid.getData()[ev.rowKey].qty)};
+        // console.log(rowData);
+
+        grid2.appendRow( rowData);
+        grid2.enable();
+
+    });
+
+    grid.on('uncheck', (ev) => {
+        var menuId = grid.getData()[ev.rowKey].menuId;
+        grid2.removeRow("menuId", menuId);
+    });
+
+    $('#order').click(function(){
+   //   grid.request('readData');
+
+        axios
+          .get( isUrl + '/orders/' + storeId +"/"+tableId )
+          .then((res) => {
+              console.log(res.data.respdata);
+              grid.resetData(res.data.respdata);
+          });
+
+    });
+
+    $('#order').click(function(){
+        var menuNm = $('#menuNm').val();
+        var menuId = $('#menuId').val();
+        var amt = $('#amt').val();
+        var qty = $('#qty').val();
+
+
+        console.log( 'menuNm : ' + menuNm );
+        console.log( 'amt : ' + amt );
+        console.log( 'qty : ' + qty );
+
+
+
+        if(amt == ""){
+            alert('가격을 입력하세요');
+            return false;
+        }
+        if(qty == ""){
+            alert('수량을 입력하세요');
+            return false;
+        }
+
+        axios
+        .post( isUrl + '/orders/' + storeId +"/"+tableId ,{
+            menuId  : menuId,
+            amt     : amt,
+            menuNm  : menuNm,
+            qty     : qty,
+
+        })
+        .then((res) => {
+           console.log(res.data.respdata);
+
+        })
+        .catch(function (error) {
+        // 에러 핸들링
+            console.log(error);
+        })
+        .then(function () {
+        // 항상 실행되는 영역 callback
+        axios.get('http://localhost:8085' + '/menu/' + storeId ).then((res) => {
+                grid.resetData(res.data.respdata);
+        });
+        });
+
+    });
+
+})
+
+
+
+tui.Grid.applyTheme('normal', {
+    cell: {
+        normal: {
+            background: "#fff",
+            border: "#e0e0e0",
+            showVerticalBorder: true,
+            showHorizontalBorder: true,
+        },
+        header: {
+            background: "#eaeaea",
+            border: "#e0e0e0",
+            showVerticalBorder: true,
+            showHorizontalBorder: true,
+        },
+        rowHeader :{
+            background: "#eaeaea",
+            border: "#e0e0e0",
+            showVerticalBorder: true,
+            showHorizontalBorder: true,
+        },
+    }
+});
+
+</script>
+
+  <div id="wrap" style="width: 90%;">
+    <div>
+        <div style="display: flex; flex-flow: row nowrap; margin-top: 20px; margin-bottom: 20px;">
+            <div style="width: 33%;"><img src="/node_modules/bootstrap-icons/icons/stars.svg">메뉴</div>
+            <div>
+                <button type="button" id="searchList" class="btn btn-primary" data-bs-toggle="button">메뉴 조회</button>
+            </div>
+        </div>
+    </div>
+    <div id="grid" style="width: 90%;"></div>
+    <input type="hidden" id="menuId" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    <input type="hidden" id="amt" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    <input type="hidden" id="qty" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    <input type="hidden" id="menuNm" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+
+    <div>
+        <div style="display: flex; flex-flow: row nowrap; margin-top: 20px; margin-bottom: 20px;">
+            <div style="width: 33%;"><img src="/node_modules/bootstrap-icons/icons/stars.svg">주문현황</div>
+            <div>
+                <button type="button" id="order" class="btn btn-primary" data-bs-toggle="button">주문</button>
+            </div>
+        </div>
+    </div>
+    <div id="grid2" style="width: 90%;"></div>
+  </div>
+
+
+</body>
+</html>
