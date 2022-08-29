@@ -140,11 +140,10 @@ $(function() {
 
         axios
         .post( isUrl + '/orders/' + storeId +"/"+tableId ,{
-            menuId  : menuId,
-            amt     : amt,
-            menuNm  : menuNm,
-            qty     : qty,
-
+            menuId: menuId,
+            menuNm: menuNm,
+            quantity: qty,
+            price :sum,
         })
         .then((res) => {
            console.log(res.data.respdata);
