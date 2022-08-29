@@ -6,46 +6,53 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import onepos.config.kafka.KafkaProcessor;
 import onepos.data.Sale;
 import onepos.data.saleRepository;
+import onepos.data.menuRepository;
 import onepos.datakafka.Ordered;
+import onepos.datakafka.Paid;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import java.util.Optional;
 
 @Service
 public class PolicyHandler{
-    // @StreamListener(KafkaProcessor.INPUT)
-    // public void onStringEventListener(@Payload String eventString){
 
-    // }
+
+    /*이벤트 발생시간을 String 변환 저장시 사용*/
+    final LocalDateTime localDateTimeNow = LocalDateTime.now();
+    String parsedLocalDateTimeNow = localDateTimeNow.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+
 
     @Autowired
     saleRepository SaleRepository ;
+    menuRepository MenuRepository ;
 
 
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whenOrderCreated(@Payload Paid paid){
+//  메뉴수량 차감. 모든 이벤트 넣기
 
-    @StreamListener(KafkaProcessor.INPUT)  //Test . 서빙 완료시 저장되도록 변경
-    public void whenOrderCreated(@Payload Ordered ordered){
+                System.out.println("##### listener UpdateStatus: " + paid.toJson());
 
 
-
-        // try {
-                System.out.println("##### listener UpdateStatus: " + ordered.toJson());
-
+            if(paid.getPayStatus().equals("PaySucess")){
                 Sale sale = new Sale();
-                sale.setOrderNumber(ordered.getQty()); // MSA 간 전달 파리미터/유형 협의 필요!!!!!!!!!!. Test 를 위해 임의값 대신 저장/
-                sale.setStoreId(1111);
-                sale.setStoreName(ordered.getProductId());
-                sale.setSaleMenuId (1234);
-                sale.setSaleAmt(ordered.getQty());
-                sale.setSaleQty(ordered.getQty());
+                sale.setOrderNumber(paid.getOrderId()); // MSA 간 전달 파리미터/유형 협의 필요!!!!!!!!!!. Test 를 위해 임의값 대신 저장/
+                sale.setSaleAmt(paid.getPrice());
+                sale.setStoreId(paid.getStoreId());
+                sale.setSaleDtm(LocalDateTime.now());
+              //  sale.setSaleMenuId(paid.getMenuId());
+              //  sale.setSaleMenuNm(paid.getMenuNm())
+              //  sale.setSaleQty(paid.getQty());
                 SaleRepository.save(sale);
-            // }catch (Exception e){
-            //     e.printStackTrace();
-            // }
+            }
 
     }
 

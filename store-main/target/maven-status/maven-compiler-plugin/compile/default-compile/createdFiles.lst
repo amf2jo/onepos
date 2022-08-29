@@ -1,2 +1,3 @@
 onepos\AbstractEvent$1.class
+onepos\datakafka\Paid.class
 onepos\config\kafka\KafkaProcessor.class

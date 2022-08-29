@@ -3,7 +3,7 @@ package onepos.data;
 import java.util.List;
 
 import javax.persistence.*;
-
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -14,9 +14,11 @@ public class Sale {
     int orderNumber ;
     int storeId ;
     String storeName;
-    String saleDtm ;
+    LocalDateTime saleDtm ;
 
-/* 주문과 메뉴를 같이 처리할 경우 */
+
+
+    /* 주문과 메뉴를 같이 처리할 경우 */
     int saleMenuId;
     public int getSaleMenuId() {
         return saleMenuId;
@@ -107,15 +109,14 @@ public class Sale {
         this.storeName = storeName;
     }
 
-    public String getSaleDtm() {
+
+
+    public LocalDateTime getSaleDtm() {
         return saleDtm;
     }
-    public void setSaleDtm(String saleDtm) {
+    public void setSaleDtm(LocalDateTime saleDtm) {
         this.saleDtm = saleDtm;
     }
-
-
-
 
 
 
