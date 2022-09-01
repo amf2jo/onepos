@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>매출조회</title>
+  <link rel="stylesheet" href="/node_modules/tui-time-picker/dist/tui-time-picker.css">
+  <link rel="stylesheet" href="/node_modules/tui-date-picker/dist/tui-date-picker.css">
+  <link rel="stylesheet" href="/node_modules/tui-grid/dist/tui-grid.css">
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="/node_modules/tui-code-snippet/tui-code-snippet.min.js"></script>
+  <script src="/node_modules/tui-time-picker/dist/tui-time-picker.min.js"></script>
+  <script src="/node_modules/tui-date-picker/dist/tui-date-picker.min.js"></script>
+  <script src="/node_modules/tui-grid/dist/tui-grid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<style>
+    * { margin: 0 auto; }
+</style>
+<body>
+<script>
+
+var grid;
+var isUrl = "http://localhost:8085";
+
+
+var getCookie = function(name) {
+var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+return value? value[2] : null;
+};
+
+var storeId = getCookie("storeId");
+console.log("쿠키 storeId 저장된 값: " + storeId);
+
+
+$(function() {
+
+grid = new tui.Grid({
+      el: document.getElementById('grid'),
+      //data: dataSource,
+      scrollX: false,
+      scrollY: false,
+      rowHeaders: ['rowNum'],
+      columns: [
+        { header: '주문번호', name: 'orderNumber', align: 'center'},
+        { header: '메뉴명', name: 'saleMenuNm', align: 'center' },
+        { header: '판매수량', name: 'saleQty', align: 'center' },
+        { header: '판매금액', name: 'saleAmt', align: 'center' },
+        { header: '주문시간', name: 'saleDtm', align: 'center' },
+        { header: '완료시간', name: 'finishedDtm', align: 'center' },
+        { header: '소요시간', name: 'servTm', align: 'center' }
+      ]
+    });
+
+
+   searchList();
+})
+
+function searchList(){
+    axios
+      .get( isUrl + '/sales/' + storeId )
+      .then((res) => {
+          console.log(res.data.respdata);
+          grid.resetData(res.data.respdata);
+      });
+}
+
+tui.Grid.applyTheme('normal', {
+    cell: {
+        normal: {
+            background: "#fff",
+            border: "#e0e0e0",
+            showVerticalBorder: true,
+            showHorizontalBorder: true,
+        },
+        header: {
+            background: "#eaeaea",
+            border: "#e0e0e0",
+            showVerticalBorder: true,
+            showHorizontalBorder: true,
+        },
+        rowHeader :{
+            background: "#eaeaea",
+            border: "#e0e0e0",
+            showVerticalBorder: true,
+            showHorizontalBorder: true,
+        },
+    }
+});
+
+</script>
+
+<div id="wrap" style="width: 90%;">
+  <div>
+    <div style="display: flex; flex-flow: row nowrap; margin-top: 20px; margin-bottom: 20px;">
+      <div style="width: 90%;"><img src="/node_modules/bootstrap-icons/icons/stars.svg">매출조회</div>
+    </div>
+  </div>
+
+  <div id="grid" style="width: 90%;"></div>
+
+</div>
+</body>
+</html>
