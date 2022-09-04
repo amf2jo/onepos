@@ -23,7 +23,15 @@
 
 var grid;
 var isUrl = "http://localhost:8085";
-var storeId= "120120" // 일단 하드코딩 . jwt 는 포기 . 페이지 이동시 넘김 ?
+
+var getCookie = function(name) {
+var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+return value? value[2] : null;
+};
+
+var storeId = getCookie("storeId");
+console.log("쿠키 storeId 저장된 값: " + storeId);
+
 
 $(function() {
 
@@ -95,7 +103,7 @@ grid = new tui.Grid({
    //   grid.request('readData');
 
         axios
-          .get( isUrl + '/menu/' + storeId )
+          .get( isUrl + '/menus/store/' + storeId )
           .then((res) => {
               console.log(res.data.respdata);
               grid.resetData(res.data.respdata);
@@ -148,7 +156,7 @@ grid = new tui.Grid({
           })
           .then(function () {
           // 항상 실행되는 영역 callback
-           axios.get('http://localhost:8085' + '/menu/' + storeId ).then((res) => {
+           axios.get('http://localhost:8085' + '/menus/store/' + storeId ).then((res) => {
                 grid.resetData(res.data.respdata);
            });
           });
@@ -198,7 +206,7 @@ grid = new tui.Grid({
           })
           .then(function () {
           // 항상 실행되는 영역 callback
-           axios.get('http://localhost:8085' + '/menu/' + storeId ).then((res) => {
+           axios.get('http://localhost:8085' + '/menus/store/' + storeId ).then((res) => {
                 grid.resetData(res.data.respdata);
            });
           });
