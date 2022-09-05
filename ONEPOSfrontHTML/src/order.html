@@ -25,8 +25,17 @@ var grid;
 var grid2;
 var menuUrl = "http://localhost:8085"
 var isUrl = "http://localhost:8090";
-var storeId= "120120"; // 일단 하드코딩 . jwt 는 포기 . 페이지 이동시 넘김 ?
 var tableId = "1";
+
+var orderId;
+
+var getCookie = function(name) {
+var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+return value? value[2] : null;
+};
+
+var storeId = getCookie("storeId");
+console.log("쿠키 storeId 저장된 값: " + storeId);
 
 $(function() {
 
@@ -46,7 +55,7 @@ $(function() {
 
     // 로딩 시 메뉴 자동 조회
     axios
-    .get( menuUrl + '/menu/' + storeId )
+    .get( menuUrl + '/menus/' + storeId )
     .then((res) => {
         console.log(res.data.respdata);
         grid.resetData(res.data.respdata);
@@ -63,7 +72,7 @@ $(function() {
             { header: '메뉴명', name: 'menuNm', align: 'center' },
             { header: '가격', name: 'amt', align: 'center', editor: 'text', formatter({value}) { return `${value}원` }},
             { header: '수량', name: 'qty', align: 'center' , editor:'text'},
-            { header: '가격', name: 'sum', align: 'center', editor: 'text', formatter({value}) { return `${value}원` }}
+            // { header: '가격', name: 'sum', align: 'center', editor: 'text', formatter({value}) { return `${value}원` }}
         ],
         summary:{
             position :'bottom',
@@ -71,7 +80,7 @@ $(function() {
             columnContent: {
                 sum :{
                     template(summary){
-                        return '합계 : '+summary.sum+'원';
+                        return '합계 : '+summary.qty+'원';
                     }
                 }
 
@@ -91,7 +100,8 @@ $(function() {
                          menuNm : grid.getData()[ev.rowKey].menuNm,
                          amt : grid.getData()[ev.rowKey].amt,
                          qty : grid.getData()[ev.rowKey].qty,
-                         sum : Number(grid.getData()[ev.rowKey].amt)*Number(grid.getData()[ev.rowKey].qty)};
+                        //  sum : Number(grid.getData()[ev.rowKey].amt)*Number(grid.getData()[ev.rowKey].qty)
+                    };
         // console.log(rowData);
 
         grid2.appendRow( rowData);
@@ -104,17 +114,17 @@ $(function() {
         grid2.removeRow("menuId", menuId);
     });
 
-    $('#order').click(function(){
-   //   grid.request('readData');
+//     $('#order').click(function(){
+//    //   grid.request('readData');
 
-        axios
-          .get( isUrl + '/orders/' + storeId +"/"+tableId )
-          .then((res) => {
-              console.log(res.data.respdata);
-              grid.resetData(res.data.respdata);
-          });
+//         axios
+//           .get( isUrl + '/orders/' + storeId +"/"+tableId )
+//           .then((res) => {
+//               console.log(res.data.respdata);
+//               grid.resetData(res.data.respdata);
+//           });
 
-    });
+//     });
 
     $('#order').click(function(){
         var menuNm = $('#menuNm').val();
@@ -128,7 +138,6 @@ $(function() {
         console.log( 'qty : ' + qty );
 
 
-
         if(amt == ""){
             alert('가격을 입력하세요');
             return false;
@@ -139,15 +148,18 @@ $(function() {
         }
 
         axios
-        .post( isUrl + '/orders/' + storeId +"/"+tableId ,{
-            menuId  : menuId,
-            amt     : amt,
-            menuNm  : menuNm,
-            qty     : qty,
-
+        .post( isUrl + '/orders' ,{
+            storeId: storeId,
+            tableNo: tableId,
+            orderItems : {
+                menuId: menuId,
+                menuNm: menuNm,
+                quantity: qty,
+                price :amt,
+            }
         })
         .then((res) => {
-           console.log(res.data.respdata);
+           console.log(res);
 
         })
         .catch(function (error) {
@@ -156,9 +168,12 @@ $(function() {
         })
         .then(function () {
         // 항상 실행되는 영역 callback
-        axios.get('http://localhost:8085' + '/menu/' + storeId ).then((res) => {
-                grid.resetData(res.data.respdata);
-        });
+            // axios.get('http://localhost:8085' + '/menus/' + storeId ).then((res) => {
+            //         grid.resetData(res.data.respdata);
+            // });
+            axios.get( isUrl + '/orders'  ).then((res) => {
+                    // grid2.resetData(res);
+            });
         });
 
     });
